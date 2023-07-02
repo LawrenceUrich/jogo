@@ -1,0 +1,71 @@
+body {
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqXwoIOOq8N7LP0GJUA7CKUbvVf3X6yqkHJTQKKehJ23qFdu_Hgigt2-J5JRscrfUosl8&usqp=CAU');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #F3F3F3;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+}
+
+#game-board {
+    margin-top: 20px;
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background-color: #474747;
+    border: 2px solid #000;
+}
+
+.snake {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fff7f7;
+}
+
+.point {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #FF0000;
+}
+
+#score-container {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.score-label {
+    margin-right: 10px;
+    font-size: 24px;
+    color: #FFF;
+}
+
+#score {
+    margin-right: 10px;
+    font-size: 24px;
+    color: #FFF;
+
+}
+
+#created-by {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #FFF;
+}
+
+
