@@ -15,6 +15,178 @@
         <p id="created-by">Criado por: Leo_xharry </p>
         
     </div>
+
+    <script>
+        // Obtém os elementos HTML
+var gameBoard = document.getElementById('game-board');
+var scoreElement = document.getElementById('score');
+
+// Variáveis para rastrear posições de toque
+var touchStartX = 0;
+var touchStartY = 0;
+var touchEndX = 0;
+var touchEndY = 0;
+
+
+// Tamanho do jogo
+var gameSize = 400;
+var blockSize = 20;
+var blockSizePx = blockSize + 'px';
+
+// Variáveis para a cobrinha
+var snake = [{ top: 0, left: 0 }];
+var direction = 'right';
+
+// Variáveis para os pontos
+var point = { top: getRandomPosition(), left: getRandomPosition() };
+var score = 0;
+
+// Função para obter uma posição aleatória
+function getRandomPosition() {
+    return Math.floor(Math.random() * (gameSize / blockSize)) * blockSize;
+}
+
+// Função para atualizar a posição da cobrinha
+function updateSnake() {
+    var head = Object.assign({}, snake[0]);
+
+    if (direction === 'right') {
+        head.left += blockSize;
+    } else if (direction === 'left') {
+        head.left -= blockSize;
+    } else if (direction === 'up') {
+        head.top -= blockSize;
+    } else if (direction === 'down') {
+        head.top += blockSize;
+    }
+
+    // Verifica se a cobrinha colidiu com ela mesma
+    for (var i = 1; i < snake.length; i++) {
+        if (head.left === snake[i].left && head.top === snake[i].top) {
+            gameOver();
+            return;
+        }
+    }
+
+    // Verifica se a cobrinha pegou o ponto
+    if (head.left === point.left && head.top === point.top) {
+        score++;
+        scoreElement.textContent = score;
+
+        // Adiciona o novo ponto em uma posição aleatória
+        point = { top: getRandomPosition(), left: getRandomPosition() };
+    } else {
+        snake.pop();
+    }
+
+    // Verifica se a cobrinha passou pelas extremidades do mini mapa
+    if (head.left >= gameSize) {
+        head.left = 0;
+    } else if (head.left < 0) {
+        head.left = gameSize - blockSize;
+    } else if (head.top >= gameSize) {
+        head.top = 0;
+    } else if (head.top < 0) {
+        head.top = gameSize - blockSize;
+    }
+
+    snake.unshift(head);
+
+    render();
+}
+
+// Função para renderizar a cobrinha e o ponto no jogo
+function render() {
+    gameBoard.innerHTML = '';
+
+    // Renderiza a cobrinha
+    for (var i = 0; i < snake.length; i++) {
+        var segment = document.createElement('div');
+        segment.className = 'snake';
+        segment.style.top = snake[i].top + 'px';
+        segment.style.left = snake[i].left + 'px';
+        gameBoard.appendChild(segment);
+    }
+
+    // Renderiza o ponto
+    var pointElement = document.createElement('div');
+    pointElement.className = 'point';
+    pointElement.style.top = point.top + 'px';
+    pointElement.style.left = point.left + 'px';
+    gameBoard.appendChild(pointElement);
+}
+
+// Função para iniciar o jogo
+function startGame() {
+    score = 0;
+    scoreElement.textContent = score;
+
+    snake = [{ top: 0, left: 0 }];
+    direction = 'right';
+    point = { top: getRandomPosition(), left: getRandomPosition() };
+
+    setInterval(updateSnake, 200);
+}
+
+// Função para finalizar o jogo
+function gameOver() {
+    alert('Game Over!');
+    snake = [{ top: 0, left: 0 }];
+    direction = 'right';
+    score = 0;
+    scoreElement.textContent = score;
+}
+
+// Adiciona eventos de teclado para controlar a direção da cobrinha
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowUp' && direction !== 'down') {
+        direction = 'up';
+    } else if (event.key === 'ArrowDown' && direction !== 'up') {
+        direction = 'down';
+    } else if (event.key === 'ArrowLeft' && direction !== 'right') {
+        direction = 'left';
+    } else if (event.key === 'ArrowRight' && direction !== 'left') {
+        direction = 'right';
+    }
+});
+
+// Adiciona evento de toque para detectar o início do toque
+document.addEventListener('touchstart', function (event) {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+});
+
+// Adiciona evento de toque para detectar o fim do toque e determinar a direção do movimento
+document.addEventListener('touchend', function (event) {
+    touchEndX = event.changedTouches[0].clientX;
+    touchEndY = event.changedTouches[0].clientY;
+
+    var deltaX = touchEndX - touchStartX;
+    var deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0 && direction !== 'left') {
+            direction = 'right';
+        } else if (deltaX < 0 && direction !== 'right') {
+            direction = 'left';
+        }
+    } else {
+        if (deltaY > 0 && direction !== 'up') {
+            direction = 'down';
+        } else if (deltaY < 0 && direction !== 'down') {
+            direction = 'up';
+        }
+    }
+});
+
+
+// Inicia o jogo
+startGame();
+
+
+
+        
+    </script>
     
     
 
